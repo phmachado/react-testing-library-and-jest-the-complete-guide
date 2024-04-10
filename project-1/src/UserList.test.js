@@ -1,15 +1,21 @@
 import { render, screen, within } from "@testing-library/react";
 import UserList from "./UserList";
 
-test("it renders one row per user", () => {
+function renderComponent() {
   const users = [
     { name: "Alice", email: "alice@gmail.com" },
     { name: "John", email: "john@gmail.com" },
   ];
 
+  render(<UserList users={users} />);
+  return { users };
+}
+
+test("it renders one row per user", () => {
+  renderComponent();
+
   // render the component
   // const { container } = render(<UserList users={users} />);
-  render(<UserList users={users} />);
 
   // find all rows in the table
   // screen.logTestingPlaygroundURL();
@@ -22,13 +28,7 @@ test("it renders one row per user", () => {
 });
 
 test("it renders the email and name of each user", () => {
-  const users = [
-    { name: "Alice", email: "alice@gmail.com" },
-    { name: "John", email: "john@gmail.com" },
-  ];
-
-  // render the component
-  render(<UserList users={users} />);
+  const { users } = renderComponent();
 
   for (let user of users) {
     const name = screen.getByRole("cell", { name: user.name });
