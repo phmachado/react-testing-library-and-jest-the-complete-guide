@@ -8,10 +8,13 @@ test("it renders one row per user", () => {
   ];
 
   // render the component
+  // const { container } = render(<UserList users={users} />);
   render(<UserList users={users} />);
 
   // find all rows in the table
   // screen.logTestingPlaygroundURL();
+  // eslint-disable-next-line
+  // const rows = container.querySelectorAll("tbody tr");
   const rows = within(screen.getByTestId("users")).getAllByRole("row");
 
   // assertion: correct number of rows in the table
