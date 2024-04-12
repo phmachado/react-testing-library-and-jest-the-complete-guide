@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import RepositoriesSummary from "./RepositoriesSummary";
 
-test("it should render the component and print out a language", () => {
+test("it should render the component and print out the correct information about the repository", () => {
   const repository = {
     language: "TypeScript",
     stargazers_count: 5,
@@ -11,7 +11,9 @@ test("it should render the component and print out a language", () => {
 
   render(<RepositoriesSummary repository={repository} />);
 
-  const language = screen.getByText("TypeScript");
-
-  expect(language).toBeInTheDocument();
+  for (let key in repository) {
+    const value = repository[key];
+    const element = screen.getByText(new RegExp(value));
+    expect(element).toBeInTheDocument();
+  }
 });
