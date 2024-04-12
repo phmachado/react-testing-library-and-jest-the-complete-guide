@@ -26,14 +26,21 @@ function renderComponent() {
       <RepositoriesListItem repository={repository} />
     </MemoryRouter>
   );
+
+  return { repository };
 }
 
 test("it renders component and shows a link to the repository github page", async () => {
-  renderComponent();
-  
-  await act(async () => {
-    await pause();
-  });
+  const { repository } = renderComponent();
+
+  //   await act(async () => {
+  //     await pause();
+  //   });
+
+  await screen.findByRole("img", { name: "JavaScript" });
+
+  const link = screen.getByRole("link", { name: /github repository/i });
+  expect(link).toHaveAttribute("href", repository.html_url);
 });
 
-const pause = () => new Promise((resolve) => setTimeout(resolve, 100));
+// const pause = () => new Promise((resolve) => setTimeout(resolve, 100));
