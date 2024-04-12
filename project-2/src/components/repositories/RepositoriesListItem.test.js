@@ -15,7 +15,7 @@ function renderComponent() {
     language: "JavaScript",
     description:
       "A declarative, efficient, and flexible JavaScript library for building user interfaces.",
-    owner: "facebook",
+    owner: { login: "facebook" },
     name: "react",
     html_url:
       "https://github.com/phmachado/react-testing-library-and-jest-the-complete-guide",
@@ -44,3 +44,22 @@ test("it renders component and shows a link to the repository github page", asyn
 });
 
 // const pause = () => new Promise((resolve) => setTimeout(resolve, 100));
+
+test("it shows a fileicon with the appropriate icon", async () => {
+  renderComponent();
+
+  const icon = await screen.findByRole("img", { name: "JavaScript" });
+
+  expect(icon).toHaveClass("js-icon");
+});
+
+test("it shows a link to the code editor page", async () => {
+  const { repository } = renderComponent();
+
+  await screen.findByRole("img", "JavaScript");
+
+  const link = await screen.findByRole("link", {
+    name: new RegExp(repository.owner.login),
+  });
+  expect(link).toHaveAttribute("href", `/repositories/${repository.full_name}`);
+});
