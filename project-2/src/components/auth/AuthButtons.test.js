@@ -42,19 +42,30 @@ describe("when user is not signed in", () => {
   });
 });
 
-// describe("when user is signed in", () => {
-//   createServer([
-//     {
-//       path: "/api/user",
-//       res: () => {
-//         return { user: { id: 1, email: "john@gmail.com" } };
-//       },
-//     },
-//   ]);
-//   test("sign in and sign up are not visable", async () => {
-//     renderComponent();
-//   });
-//   test("sign out is visible", async () => {
-//     renderComponent();
-//   });
-// });
+describe("when user is signed in", () => {
+  createServer([
+    {
+      path: "/api/user",
+      res: () => {
+        return { user: { id: 1, email: "john@gmail.com" } };
+      },
+    },
+  ]);
+  test("sign in and sign up are not visable", async () => {
+    await renderComponent();
+
+    const signInButton = screen.queryByRole("link", { name: /sign in/i });
+    const signUpButton = screen.queryByRole("link", { name: /sign up/i });
+
+    expect(signInButton).not.toBeInTheDocument();
+    expect(signUpButton).not.toBeInTheDocument();
+  });
+  test("sign out is visible", async () => {
+    await renderComponent();
+
+    const signOutButton = screen.getByRole("link", { name: /sign out/i });
+
+    expect(signOutButton).toBeInTheDocument();
+    expect(signOutButton).toHaveAttribute("href", "/signout");
+  });
+});
